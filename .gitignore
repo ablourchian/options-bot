@@ -1,0 +1,25 @@
+# Secrets
+.env
+.schwab_token.json
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Results & cache
+results/
+.universe_cache.json
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
