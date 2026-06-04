@@ -27,7 +27,7 @@ def _score_iv_rank(iv_rank: float, mode: str) -> float:
         return _clamp(1 - iv_rank / 100, 0, 1) * 25
 
 
-def _score_iv_hv(iv_hv_ratio: float | None, mode: str) -> float:
+def _score_iv_hv(iv_hv_ratio: object, mode: str) -> float:
     """20 pts. Sell: reward ratio > 1. Buy: reward ratio < 1."""
     if iv_hv_ratio is None:
         return 10.0  # neutral if missing
@@ -49,7 +49,7 @@ def _score_spread(bid: float, ask: float, mid: float) -> float:
     return _clamp(1 - spread_pct / 0.20, 0, 1) * 20
 
 
-def _score_theta(theta: float | None, mid: float) -> float:
+def _score_theta(theta: object, mid: float) -> float:
     """
     20 pts. Daily theta as % of option price (for sellers: higher = better).
     A theta of 1% of price per day is very good for selling.
@@ -62,7 +62,7 @@ def _score_theta(theta: float | None, mid: float) -> float:
     return _clamp(decay_rate / 0.02, 0, 1) * 20
 
 
-def _score_delta_sell(delta: float | None, option_type: str) -> float:
+def _score_delta_sell(delta: object, option_type: str) -> float:
     """
     15 pts for sell mode.
     Sweet spot: 0.20–0.35 delta (calls) or -0.20 to -0.35 (puts).
@@ -79,7 +79,7 @@ def _score_delta_sell(delta: float | None, option_type: str) -> float:
         return _clamp(1 - (abs_delta - 0.35) / 0.20, 0, 1) * 15
 
 
-def _score_delta_buy(delta: float | None, option_type: str) -> float:
+def _score_delta_buy(delta: object, option_type: str) -> float:
     """
     15 pts for buy mode.
     Sweet spot: 0.40–0.60 delta (near ATM for directional plays).
@@ -95,7 +95,7 @@ def _score_delta_buy(delta: float | None, option_type: str) -> float:
         return _clamp(1 - (abs_delta - 0.60) / 0.30, 0, 1) * 15
 
 
-def _score_news(news_data: dict | None, contract_type: str) -> float:
+def _score_news(news_data: object, contract_type: str) -> float:
     """
     10 pts max. News sentiment bonus/penalty based on direction alignment.
     sell mode: bearish news = good (elevated fear = high IV)
@@ -131,7 +131,7 @@ def _score_news(news_data: dict | None, contract_type: str) -> float:
     return _clamp(pts, 0, 10)
 
 
-def _score_intraday(signal: dict | None, contract_type: str) -> float:
+def _score_intraday(signal: object, contract_type: str) -> float:
     """
     5 pts max. Bonus if intraday technical signal agrees with contract direction.
     """
