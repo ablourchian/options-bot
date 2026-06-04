@@ -11,35 +11,35 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
 ::-webkit-scrollbar-thumb{background:#374151;border-radius:3px}
 .topbar{background:linear-gradient(135deg,#0f172a,#1e1b4b 50%,#0f172a);
   border-bottom:1px solid rgba(139,92,246,.25);padding:18px 32px;
-  display:flex;justify-content:space-between;align-items:center}
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .title{font-size:1.2rem;font-weight:800;color:#f9fafb}
 .title span{color:#8b5cf6}
 .badge{display:inline-flex;align-items:center;gap:6px;background:#1f2937;
   border:1px solid #374151;border-radius:20px;padding:4px 12px;font-size:.75rem}
 .page{max-width:1400px;margin:0 auto;padding:24px 32px}
-.stats{display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap}
-.stat{background:#111827;border:1px solid #1f2937;border-radius:10px;padding:14px 20px;min-width:100px}
-.stat .v{font-size:1.7rem;font-weight:800;line-height:1}
-.stat .l{font-size:.72rem;color:#6b7280;margin-top:3px}
-.section-title{font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;
+.stats{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.stat{background:#111827;border:1px solid #1f2937;border-radius:10px;padding:14px 20px;min-width:90px}
+.stat .v{font-size:1.6rem;font-weight:800;line-height:1}
+.stat .l{font-size:.7rem;color:#6b7280;margin-top:3px}
+.sec{font-size:.66rem;font-weight:700;color:#6b7280;text-transform:uppercase;
   letter-spacing:.1em;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.section-title::after{content:'';flex:1;height:1px;background:#1f2937}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+.sec::after{content:'';flex:1;height:1px;background:#1f2937}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-bottom:32px}
 .tabs{display:flex;gap:4px;background:#111827;border:1px solid #1f2937;border-radius:10px;
   padding:4px;width:fit-content;margin-bottom:20px}
 .tab{padding:7px 18px;border-radius:7px;font-size:.82rem;font-weight:600;cursor:pointer;
   color:#6b7280;border:none;background:none;transition:all .15s}
 .tab.active{background:#1f2937;color:#f9fafb}
-.tab-pane{display:none}.tab-pane.active{display:block}
-.disclaimer{background:#1c1917;border:1px solid #292524;border-radius:8px;
-  padding:10px 16px;font-size:.72rem;color:#78716c;margin-top:24px;line-height:1.6}
+.tp{display:none}.tp.active{display:block}
+.disc{background:#1c1917;border:1px solid #292524;border-radius:8px;
+  padding:10px 16px;font-size:.7rem;color:#78716c;margin-top:24px;line-height:1.6}
 </style>
 </head>
 <body>
 <div class="topbar">
   <div>
     <div class="title">Options<span>Bot</span> · Day Trade Setups</div>
-    <div style="font-size:.78rem;color:#6b7280;margin-top:3px">2026-06-04 · Generated 07:54 AM ET · 20 candidates screened</div>
+    <div style="font-size:.76rem;color:#6b7280;margin-top:3px">2026-06-04 · 08:05 AM ET · 20 candidates · click any card for news feed</div>
   </div>
   <div style="display:flex;gap:8px">
     <span class="badge"><span style="color:#10b981">●</span> 14 CALLS</span>
@@ -49,11 +49,11 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
 
 <div class="page">
   <div class="stats">
-    <div class="stat"><div class="v" style="color:#10b981">14</div><div class="l">Call Setups</div></div>
-    <div class="stat"><div class="v" style="color:#ef4444">6</div><div class="l">Put Setups</div></div>
-    <div class="stat"><div class="v" style="color:#f9fafb">20</div><div class="l">Total Screened</div></div>
+    <div class="stat"><div class="v" style="color:#10b981">14</div><div class="l">Calls</div></div>
+    <div class="stat"><div class="v" style="color:#ef4444">6</div><div class="l">Puts</div></div>
+    <div class="stat"><div class="v" style="color:#f9fafb">20</div><div class="l">Screened</div></div>
     <div class="stat"><div class="v" style="color:#f59e0b">74</div><div class="l">Top Score</div></div>
-    <div class="stat"><div class="v" style="color:#8b5cf6">20</div><div class="l">High Conviction</div></div>
+    <div class="stat"><div class="v" style="color:#8b5cf6">20</div><div class="l">High Conv.</div></div>
   </div>
 
   <div class="tabs">
@@ -62,13 +62,11 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
     <button class="tab" onclick="sw('puts',this)">📉 Puts</button>
   </div>
 
-  <div id="all" class="tab-pane active">
-    <div class="section-title">All Setups · Ranked by Conviction</div>
+  <div id="all" class="tp active">
+    <div class="sec">All Setups · Ranked by Conviction</div>
     <div class="grid">
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">SMCI</div>
@@ -76,24 +74,68 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#10b981">74</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$47.28</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">7.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+52.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">58.1</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+35.2%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+35.2%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a0',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (2 articles)</span>
+          <span id="arrow-a0" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a0" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              SMCI News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#10b981;font-size:.68rem;font-weight:600;text-transform:uppercase">bullish</span>
+              <span style="color:#475569;font-size:.65rem">2 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52999339/why-is-super-micro-stock-falling-thursday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Is Super Micro Stock Falling Thursday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T13:31</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52980285/why-super-micro-computer-stock-is-falling-on-wednesday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Super Micro Computer Stock Is Falling On Wednesday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:12</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">ARM</div>
@@ -101,24 +143,57 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#10b981">72</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$382.44</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">7.7%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+82.8%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">55.9</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+3.5%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -29d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+3.5%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -29.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a1',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (1 articles)</span>
+          <span id="arrow-a1" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a1" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              ARM News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#10b981;font-size:.68rem;font-weight:600;text-transform:uppercase">bullish</span>
+              <span style="color:#475569;font-size:.65rem">1 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52980285/why-super-micro-computer-stock-is-falling-on-wednesday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Super Micro Computer Stock Is Falling On Wednesday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:12</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">COIN</div>
@@ -126,24 +201,79 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#10b981">72</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#f59e0b;font-family:monospace;font-size:.8rem">█████░░░░░ 5/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$167.70</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">7.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-14.2%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">51.5</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-3449.1%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -28d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-3449.1%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -28.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a2',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (3 articles)</span>
+          <span id="arrow-a2" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a2" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              COIN News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#ef4444;font-size:.68rem;font-weight:600;text-transform:uppercase">bearish</span>
+              <span style="color:#475569;font-size:.65rem">3 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52994248/why-own-bitcoin-at-all-kalshi-ceo-says-perpetual-futures-are-the-purest-form-of-trading" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Own Bitcoin At All? Kalshi CEO Says Perpetual Futures Are The 'Purest Form Of Trading'</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T10:38</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52991582/bitcoin-below-63000-ethereum-xrp-dogecoin-plummet-extreme-fear-bearish-shift" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Below $63,000, Ethereum, XRP, Dogecoin Also Plummet Amid 'Extreme Fear': Analyst Pinpoi</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T03:10</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/news/26/06/52988058/meta-microsoft-coinbase-starlink-and-law-enforcement-join-forces-to-disrupt-criminal-scam-networks-i" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Meta, Microsoft, Coinbase, Starlink And Law Enforcement Join Forces To Disrupt Criminal Scam Ne</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T20:36</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">MRVL</div>
@@ -151,24 +281,101 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">69</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$298.23</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">6.0%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+68.6%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">68.3</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.6%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -8d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.6%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -8.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a3',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (5 articles)</span>
+          <span id="arrow-a3" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a3" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              MRVL News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#34d399;font-size:.68rem;font-weight:600;text-transform:uppercase">leaning bullish</span>
+              <span style="color:#475569;font-size:.65rem">5 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52998010/why-is-marvell-technology-stock-falling-thursday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Is Marvell Technology Stock Falling Thursday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T12:59</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/markets/tech/26/06/52984876/broadcoms-ai-revenue-doubled-and-it-may-not-even-be-halfway-done" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Broadcom's AI Revenue Doubled — And It May Not Even Be Halfway Done</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T19:22</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/insights/options/26/06/52981128/10-information-technology-stocks-whale-activity-in-todays-session" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">10 Information Technology Stocks Whale Activity In Today's Session</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:35</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/markets/equities/26/06/52980840/stocks-retreat-records-rate-hike-bets-oil-climbs-iran-markets-wednesday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">S&P 500, Nasdaq 100 Drop From Records As Rate-Hike Bets Build, Oil Climbs: Stock Market Today</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:25</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/Opinion/26/06/52976610/nvidias-ceo-accelerates-semi-mania-extraordinary-spacex-confidence-tariffs-are-back" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Nvidia's CEO Accelerates Semi Mania; Extraordinary SpaceX Confidence; Tariffs Are Back</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T15:46</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">HOOD</div>
@@ -176,24 +383,68 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">69</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$84.46</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">5.8%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+9.5%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">52.4</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-2.1%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -37d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-2.1%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -37.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a4',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (2 articles)</span>
+          <span id="arrow-a4" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a4" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              HOOD News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#34d399;font-size:.68rem;font-weight:600;text-transform:uppercase">leaning bullish</span>
+              <span style="color:#475569;font-size:.65rem">2 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52994248/why-own-bitcoin-at-all-kalshi-ceo-says-perpetual-futures-are-the-purest-form-of-trading" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Own Bitcoin At All? Kalshi CEO Says Perpetual Futures Are The 'Purest Form Of Trading'</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T10:38</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/markets/prediction-markets/26/06/52977794/nba-finals-prediction-market-preview-can-the-knicks-upset-the-spurs-and-will-trump-attend" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">NBA Finals Prediction Market Preview: Can The Knicks Upset The Spurs—And Will Trump Attend?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T16:11</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">LITE</div>
@@ -201,24 +452,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#f59e0b;font-family:monospace;font-size:.8rem">████░░░░░░ 4/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$890.48</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">9.0%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-8.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">56.6</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+4.4%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+4.4%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a5',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-a5" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a5" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for LITE.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">NOW</div>
@@ -226,24 +485,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$123.73</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">4.6%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+30.1%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">50.9</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.4%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -43d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.4%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -43.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a6',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-a6" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a6" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for NOW.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">INTU</div>
@@ -251,24 +518,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$316.75</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">4.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-19.4%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">47.6</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+1.8%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -15d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+1.8%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -15.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a7',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-a7" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a7" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for INTU.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">MSTR</div>
@@ -276,24 +551,123 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#f59e0b;font-family:monospace;font-size:.8rem">████░░░░░░ 4/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$129.92</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">6.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-26.8%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">57.5</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-149.5%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-149.5%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a8',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (7 articles)</span>
+          <span id="arrow-a8" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a8" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              MSTR News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#6b7280;font-size:.68rem;font-weight:600;text-transform:uppercase">neutral</span>
+              <span style="color:#475569;font-size:.65rem">7 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/53001805/bitcoin-crashes-4-but-at-63000-the-bottom-is-almost-in-standard-chartered" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Crashes 4% But At $63,000 The Bottom Is 'Almost In': Standard Chartered</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T14:07</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52999874/bitmines-300m-raise-is-borrowing-a-page-from-saylors-ponzi-playbook-peter-schiff-says" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitmine's $300M Raise Is 'Borrowing A Page From Saylor's Ponzi Playbook', Peter Schiff Says</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T13:39</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52997776/michael-saylors-10-billion-bitcoin-hole-what-does-strategy-do-now" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Michael Saylor's $10 Billion Bitcoin Hole: What Does Strategy Do Now?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T12:51</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52994899/bitcoin-crashes-as-space-stocks-soar-is-spacexs-ipo-pulling-capital-away-from-crypto" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Crashes As Space Stocks Soar: Is SpaceX's IPO Pulling Capital Away From Crypto?<span style="background:#7c3aed;color:#fff;padding:1px 5px;border-radius:4px;font-size:.6rem;margin-left:4px">!</span></div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T11:04</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52991646/google-capital-raise-michael-saylor-strategy-old-wine-new-bottle" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Google's $84 Billion Capital Raise Uses Tools 'Popularized' By Michael Saylor's Strategy, Says </div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T09:41</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52985608/bitcoin-is-in-purge-mode-bloombergs-mcglone-warns-next-stop-50000" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Is In 'Purge Mode', Bloomberg's McGlone Warns: Next Stop—$50,000</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T19:47</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/insights/options/26/06/52981128/10-information-technology-stocks-whale-activity-in-todays-session" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">10 Information Technology Stocks Whale Activity In Today's Session</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:35</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">WDAY</div>
@@ -301,24 +675,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$151.01</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">5.3%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+20.8%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">50.0</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+5.6%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -14d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+5.6%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -14.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a9',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-a9" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a9" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for WDAY.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">FDX</div>
@@ -326,24 +708,57 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$336.96</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">3.3%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-10.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">51.8</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Earnings in 19d | Last EPS BEAT (+25.6%)</div>
-          <div style="color:#9ca3af;font-size:.72rem;margin-top:4px">Earnings in 19d</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Earnings in 19d | Last EPS BEAT (+25.6%)</div>
+          <div style="color:#9ca3af;font-size:.72rem;margin-top:4px">Earnings in 19.0d</div>
           
+          <button onclick="toggleFeed('a10',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (1 articles)</span>
+          <span id="arrow-a10" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a10" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              FDX News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#6b7280;font-size:.68rem;font-weight:600;text-transform:uppercase">neutral</span>
+              <span style="color:#475569;font-size:.65rem">1 articles</span>
+            </div>
+          </div>
+          <div style="padding:6px 10px;font-size:.68rem;color:#f59e0b">Earnings in 19d · Last EPS BEAT (25.6%)</div>
+          
+            <a href="https://www.benzinga.com/news/26/06/52981728/morgan-stanley-maintains-underweight-on-fedex-lowers-price-target-to-160" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Morgan Stanley Maintains Underweight on FedEx, Lowers Price Target to $160<span style="background:#7c3aed;color:#fff;padding:1px 5px;border-radius:4px;font-size:.6rem;margin-left:4px">!</span></div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:49</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">APP</div>
@@ -351,28 +766,61 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$570.63</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">6.0%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+13.9%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">60.5</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+3.5%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -29d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+3.5%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -29.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('a11',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (1 articles)</span>
+          <span id="arrow-a11" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-a11" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              APP News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#6b7280;font-size:.68rem;font-weight:600;text-transform:uppercase">neutral</span>
+              <span style="color:#475569;font-size:.65rem">1 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/insights/news/26/06/52978057/heres-how-much-100-invested-in-applovin-5-years-ago-would-be-worth-today" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Here's How Much $100 Invested In AppLovin 5 Years Ago Would Be Worth Today</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T16:15</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div></div>
   </div>
-  <div id="calls" class="tab-pane">
-    <div class="section-title">Call Setups · Bullish Swings</div>
+  <div id="calls" class="tp">
+    <div class="sec">Call Setups · Bullish Swings</div>
     <div class="grid">
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">SMCI</div>
@@ -380,24 +828,68 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#10b981">74</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$47.28</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">7.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+52.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">58.1</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+35.2%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+35.2%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('c0',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (2 articles)</span>
+          <span id="arrow-c0" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-c0" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              SMCI News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#10b981;font-size:.68rem;font-weight:600;text-transform:uppercase">bullish</span>
+              <span style="color:#475569;font-size:.65rem">2 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52999339/why-is-super-micro-stock-falling-thursday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Is Super Micro Stock Falling Thursday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T13:31</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52980285/why-super-micro-computer-stock-is-falling-on-wednesday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Super Micro Computer Stock Is Falling On Wednesday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:12</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">ARM</div>
@@ -405,24 +897,57 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#10b981">72</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$382.44</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">7.7%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+82.8%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">55.9</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+3.5%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -29d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+3.5%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -29.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('c1',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (1 articles)</span>
+          <span id="arrow-c1" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-c1" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              ARM News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#10b981;font-size:.68rem;font-weight:600;text-transform:uppercase">bullish</span>
+              <span style="color:#475569;font-size:.65rem">1 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52980285/why-super-micro-computer-stock-is-falling-on-wednesday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Super Micro Computer Stock Is Falling On Wednesday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:12</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">MRVL</div>
@@ -430,24 +955,101 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">69</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$298.23</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">6.0%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+68.6%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">68.3</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.6%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -8d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.6%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -8.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('c2',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (5 articles)</span>
+          <span id="arrow-c2" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-c2" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              MRVL News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#34d399;font-size:.68rem;font-weight:600;text-transform:uppercase">leaning bullish</span>
+              <span style="color:#475569;font-size:.65rem">5 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/trading-ideas/movers/26/06/52998010/why-is-marvell-technology-stock-falling-thursday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Is Marvell Technology Stock Falling Thursday?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T12:59</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/markets/tech/26/06/52984876/broadcoms-ai-revenue-doubled-and-it-may-not-even-be-halfway-done" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Broadcom's AI Revenue Doubled — And It May Not Even Be Halfway Done</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T19:22</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/insights/options/26/06/52981128/10-information-technology-stocks-whale-activity-in-todays-session" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">10 Information Technology Stocks Whale Activity In Today's Session</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:35</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/markets/equities/26/06/52980840/stocks-retreat-records-rate-hike-bets-oil-climbs-iran-markets-wednesday" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">S&P 500, Nasdaq 100 Drop From Records As Rate-Hike Bets Build, Oil Climbs: Stock Market Today</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:25</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/Opinion/26/06/52976610/nvidias-ceo-accelerates-semi-mania-extraordinary-spacex-confidence-tariffs-are-back" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Nvidia's CEO Accelerates Semi Mania; Extraordinary SpaceX Confidence; Tariffs Are Back</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T15:46</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">HOOD</div>
@@ -455,24 +1057,68 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">69</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">██░░░░░░░░ 2/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$84.46</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">5.8%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+9.5%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">52.4</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-2.1%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -37d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-2.1%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -37.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('c3',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (2 articles)</span>
+          <span id="arrow-c3" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-c3" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              HOOD News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#34d399;font-size:.68rem;font-weight:600;text-transform:uppercase">leaning bullish</span>
+              <span style="color:#475569;font-size:.65rem">2 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52994248/why-own-bitcoin-at-all-kalshi-ceo-says-perpetual-futures-are-the-purest-form-of-trading" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Own Bitcoin At All? Kalshi CEO Says Perpetual Futures Are The 'Purest Form Of Trading'</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T10:38</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/markets/prediction-markets/26/06/52977794/nba-finals-prediction-market-preview-can-the-knicks-upset-the-spurs-and-will-trump-attend" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">NBA Finals Prediction Market Preview: Can The Knicks Upset The Spurs—And Will Trump Attend?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T16:11</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">NOW</div>
@@ -480,24 +1126,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$123.73</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">4.6%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+30.1%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">50.9</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.4%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -43d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+0.4%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -43.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('c4',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-c4" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-c4" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for NOW.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #10b981;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#10b981';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#10b981';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">WDAY</div>
@@ -505,28 +1159,36 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$151.01</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">5.3%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#10b981;font-weight:600">+20.8%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">50.0</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+5.6%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -14d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+5.6%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -14.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('c5',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-c5" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-c5" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for WDAY.</div>
         </div></div>
   </div>
-  <div id="puts" class="tab-pane">
-    <div class="section-title">Put Setups · Bearish Swings</div>
+  <div id="puts" class="tp">
+    <div class="sec">Put Setups · Bearish Swings</div>
     <div class="grid">
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">COIN</div>
@@ -534,24 +1196,79 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#10b981">72</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#f59e0b;font-family:monospace;font-size:.8rem">█████░░░░░ 5/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$167.70</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">7.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-14.2%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">51.5</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-3449.1%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -28d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-3449.1%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -28.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('p0',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (3 articles)</span>
+          <span id="arrow-p0" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-p0" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              COIN News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#ef4444;font-size:.68rem;font-weight:600;text-transform:uppercase">bearish</span>
+              <span style="color:#475569;font-size:.65rem">3 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52994248/why-own-bitcoin-at-all-kalshi-ceo-says-perpetual-futures-are-the-purest-form-of-trading" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Why Own Bitcoin At All? Kalshi CEO Says Perpetual Futures Are The 'Purest Form Of Trading'</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T10:38</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52991582/bitcoin-below-63000-ethereum-xrp-dogecoin-plummet-extreme-fear-bearish-shift" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Below $63,000, Ethereum, XRP, Dogecoin Also Plummet Amid 'Extreme Fear': Analyst Pinpoi</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T03:10</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/news/26/06/52988058/meta-microsoft-coinbase-starlink-and-law-enforcement-join-forces-to-disrupt-criminal-scam-networks-i" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Meta, Microsoft, Coinbase, Starlink And Law Enforcement Join Forces To Disrupt Criminal Scam Ne</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T20:36</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">LITE</div>
@@ -559,24 +1276,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#f59e0b;font-family:monospace;font-size:.8rem">████░░░░░░ 4/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$890.48</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">9.0%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-8.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">56.6</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+4.4%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+4.4%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('p1',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-p1" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-p1" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for LITE.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">INTU</div>
@@ -584,24 +1309,32 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$316.75</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">4.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-19.4%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">47.6</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+1.8%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -15d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+1.8%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -15.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('p2',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-p2" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-p2" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for INTU.</div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">MSTR</div>
@@ -609,24 +1342,123 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#f59e0b;font-family:monospace;font-size:.8rem">████░░░░░░ 4/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$129.92</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">6.4%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-26.8%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">57.5</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-149.5%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS MISS (-149.5%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -30.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('p3',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (7 articles)</span>
+          <span id="arrow-p3" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-p3" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              MSTR News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#6b7280;font-size:.68rem;font-weight:600;text-transform:uppercase">neutral</span>
+              <span style="color:#475569;font-size:.65rem">7 articles</span>
+            </div>
+          </div>
+          
+          
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/53001805/bitcoin-crashes-4-but-at-63000-the-bottom-is-almost-in-standard-chartered" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#ef4444;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Crashes 4% But At $63,000 The Bottom Is 'Almost In': Standard Chartered</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T14:07</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52999874/bitmines-300m-raise-is-borrowing-a-page-from-saylors-ponzi-playbook-peter-schiff-says" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitmine's $300M Raise Is 'Borrowing A Page From Saylor's Ponzi Playbook', Peter Schiff Says</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T13:39</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52997776/michael-saylors-10-billion-bitcoin-hole-what-does-strategy-do-now" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Michael Saylor's $10 Billion Bitcoin Hole: What Does Strategy Do Now?</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T12:51</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52994899/bitcoin-crashes-as-space-stocks-soar-is-spacexs-ipo-pulling-capital-away-from-crypto" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Crashes As Space Stocks Soar: Is SpaceX's IPO Pulling Capital Away From Crypto?<span style="background:#7c3aed;color:#fff;padding:1px 5px;border-radius:4px;font-size:.6rem;margin-left:4px">!</span></div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T11:04</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52991646/google-capital-raise-michael-saylor-strategy-old-wine-new-bottle" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Google's $84 Billion Capital Raise Uses Tools 'Popularized' By Michael Saylor's Strategy, Says </div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-04T09:41</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/crypto/cryptocurrency/26/06/52985608/bitcoin-is-in-purge-mode-bloombergs-mcglone-warns-next-stop-50000" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Bitcoin Is In 'Purge Mode', Bloomberg's McGlone Warns: Next Stop—$50,000</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T19:47</div>
+                </div>
+              </div>
+            </a>
+            <a href="https://www.benzinga.com/insights/options/26/06/52981128/10-information-technology-stocks-whale-activity-in-todays-session" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">10 Information Technology Stocks Whale Activity In Today's Session</div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:35</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">FDX</div>
@@ -634,24 +1466,57 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">66</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$336.96</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">3.3%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-10.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">51.8</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Earnings in 19d | Last EPS BEAT (+25.6%)</div>
-          <div style="color:#9ca3af;font-size:.72rem;margin-top:4px">Earnings in 19d</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Earnings in 19d | Last EPS BEAT (+25.6%)</div>
+          <div style="color:#9ca3af;font-size:.72rem;margin-top:4px">Earnings in 19.0d</div>
           
+          <button onclick="toggleFeed('p4',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (1 articles)</span>
+          <span id="arrow-p4" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-p4" style="display:none;margin-top:10px;background:#0d1117;
+            border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;
+               padding:8px 12px;border-bottom:1px solid #1e293b;background:#111827">
+            <span style="font-size:.72rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+              FDX News Feed
+            </span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="color:#6b7280;font-size:.68rem;font-weight:600;text-transform:uppercase">neutral</span>
+              <span style="color:#475569;font-size:.65rem">1 articles</span>
+            </div>
+          </div>
+          <div style="padding:6px 10px;font-size:.68rem;color:#f59e0b">Earnings in 19d · Last EPS BEAT (25.6%)</div>
+          
+            <a href="https://www.benzinga.com/news/26/06/52981728/morgan-stanley-maintains-underweight-on-fedex-lowers-price-target-to-160" target="_blank" style="display:block;text-decoration:none;padding:8px 10px;
+               border-bottom:1px solid #1e293b;transition:background .15s"
+               onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='transparent'">
+              <div style="display:flex;gap:6px;align-items:flex-start">
+                <span style="color:#6b7280;margin-top:3px;font-size:.6rem">●</span>
+                <div style="flex:1">
+                  <div style="color:#e2e8f0;line-height:1.4">Morgan Stanley Maintains Underweight on FedEx, Lowers Price Target to $160<span style="background:#7c3aed;color:#fff;padding:1px 5px;border-radius:4px;font-size:.6rem;margin-left:4px">!</span></div>
+                  <div style="color:#475569;font-size:.65rem;margin-top:3px">benzinga  2026-06-03T17:49</div>
+                </div>
+              </div>
+            </a>
+        </div>
         </div>
         <div style="background:#111827;border:1px solid #1f2937;border-left:3px solid #ef4444;
-             border-radius:12px;padding:18px;transition:all .2s"
-             onmouseover="this.style.borderColor='#ef4444';this.style.background='#131d2e'"
-             onmouseout="this.style.borderColor='#1f2937';this.style.borderLeftColor='#ef4444';this.style.background='#111827'">
+             border-radius:12px;padding:18px;transition:border-color .2s">
           <div style="display:flex;justify-content:space-between;align-items:flex-start">
             <div>
               <div style="font-size:1.5rem;font-weight:800;color:#f9fafb">ZS</div>
@@ -659,34 +1524,54 @@ body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif}
             </div>
             <div style="text-align:right">
               <div style="font-size:1.8rem;font-weight:800;color:#f59e0b">64</div>
-              <div style="font-size:.65rem;color:#6b7280">score</div>
+              <div style="font-size:.62rem;color:#6b7280">score</div>
             </div>
           </div>
           <div style="margin-top:10px"><span style="color:#ef4444;font-family:monospace;font-size:.8rem">███░░░░░░░ 3/10</span></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;font-size:.78rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;font-size:.78rem">
             <div style="color:#9ca3af">Spot  <span style="color:#f9fafb;font-weight:600">$139.60</span></div>
             <div style="color:#9ca3af">ATR  <span style="color:#f9fafb;font-weight:600">4.8%</span></div>
             <div style="color:#9ca3af">Gap  <span style="color:#ef4444;font-weight:600">-13.3%</span></div>
             <div style="color:#9ca3af">RSI  <span style="color:#f9fafb;font-weight:600">65.0</span></div>
           </div>
-          <div style="margin-top:8px;font-size:.72rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+6.9%)</div>
-          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -9d ⚠ EARNINGS RISK</div>
+          <div style="margin-top:6px;font-size:.70rem;color:#9ca3af;line-height:1.4">Last EPS BEAT (+6.9%)</div>
+          <div style="color:#ef4444;font-size:.72rem;margin-top:4px">Earnings in -9.0d ⚠ EARNINGS RISK</div>
           
+          <button onclick="toggleFeed('p5',this)"
+          style="width:100%;margin-top:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;
+                 border-radius:8px;color:#94a3b8;font-size:.75rem;font-weight:600;cursor:pointer;
+                 display:flex;justify-content:space-between;align-items:center;transition:all .15s"
+          onmouseover="this.style.background='#263548';this.style.borderColor='#475569'"
+          onmouseout="this.style.background='#1e293b';this.style.borderColor='#334155'">
+          <span>📰 News Feed (0 articles)</span>
+          <span id="arrow-p5" style="transition:transform .2s">▼</span>
+        </button>
+          <div id="feed-p5" style="display:none;margin-top:12px;padding:10px;background:#0f172a;border-radius:8px;font-size:.75rem;color:#6b7280">No news found for ZS.</div>
         </div></div>
   </div>
 
-  <div class="disclaimer">
-    ⚠ For informational purposes only. Not financial advice. Day trading options involves significant risk of loss.
-    Always verify entries with your own analysis. Never trade based solely on automated signals.
-    Earnings dates shown are estimates — verify before trading.
+  <div class="disc">
+    For informational purposes only. Not financial advice. Day trading options involves significant risk of loss.
+    Always verify entries with your own analysis. Earnings dates are estimates — verify before trading.
   </div>
 </div>
+
 <script>
 function sw(id,el){
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
+}
+
+function toggleFeed(idx, btn) {
+  const feed  = document.getElementById('feed-' + idx);
+  const arrow = document.getElementById('arrow-' + idx);
+  const open  = feed.style.display === 'block';
+  feed.style.display  = open ? 'none' : 'block';
+  arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+  btn.style.background  = open ? '#1e293b' : '#263548';
+  btn.style.borderColor = open ? '#334155' : '#475569';
 }
 </script>
 </body></html>
