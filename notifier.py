@@ -36,7 +36,7 @@ def _fmt(val, spec=".2f", fallback="—"):
         return fallback
 
 
-def send_daily_report(ranked: list[dict], scan_date: str, dashboard_path: str = None):
+def send_daily_report(ranked: list[dict], scan_date: str, dashboard_path: str = None, pages_url: str = None):
     if not WEBHOOK_URL:
         print("  [notifier] DISCORD_WEBHOOK not set in .env — skipping.")
         return
@@ -72,12 +72,16 @@ def send_daily_report(ranked: list[dict], scan_date: str, dashboard_path: str = 
             "inline": False,
         })
 
+    desc = (
+        f"**{a_plus}** A+ setups · **{a_grade}** A setups · "
+        f"**{total}** contracts · **{tickers}** tickers · avg score **{avg_score:.1f}**"
+    )
+    if pages_url:
+        desc += f"\n\n[**View Full Dashboard →**]({pages_url})"
+
     embed = {
         "title": f"📊 Options Bot — {scan_date}",
-        "description": (
-            f"**{a_plus}** A+ setups · **{a_grade}** A setups · "
-            f"**{total}** contracts · **{tickers}** tickers · avg score **{avg_score:.1f}**"
-        ),
+        "description": desc,
         "color": _grade_color(top_grade),
         "fields": fields,
         "footer": {"text": "Options Bot · paper trading · Alpaca"},

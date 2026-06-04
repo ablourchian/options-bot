@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Options Bot · 2026-06-03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0f;color:#e5e7eb;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#111}
+::-webkit-scrollbar-thumb{background:#374151;border-radius:3px}
+
+/* Layout */
+.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);
+  border-bottom:1px solid rgba(139,92,246,.2);padding:20px 32px;
+  display:flex;justify-content:space-between;align-items:center}
+.topbar-title{font-size:1.25rem;font-weight:800;color:#f9fafb;letter-spacing:-.02em}
+.topbar-title span{color:#8b5cf6}
+.topbar-meta{font-size:.8rem;color:#6b7280}
+.topbar-meta strong{color:#9ca3af}
+
+.page{max-width:1400px;margin:0 auto;padding:24px 32px}
+.section{margin-bottom:36px}
+.section-title{font-size:.7rem;font-weight:700;color:#6b7280;text-transform:uppercase;
+  letter-spacing:.12em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:#1f2937}
+
+/* Stat cards */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.stat-card{background:#111827;border:1px solid #1f2937;border-radius:12px;
+  padding:16px;transition:border-color .2s}
+.stat-card:hover{border-color:#374151}
+
+/* Trade cards */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.trade-card{background:#111827;border:1px solid #1f2937;border-radius:14px;
+  padding:18px;transition:all .2s;cursor:default}
+.trade-card:hover{border-color:#374151;background:#131d2e;transform:translateY(-1px)}
+.metric{background:#0f172a;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.metric-lbl{font-size:.68rem;color:#6b7280;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.metric-val{font-size:.9rem;font-weight:700;color:#e5e7eb}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;background:#111827;border:1px solid #1f2937;
+  border-radius:10px;padding:4px;width:fit-content;margin-bottom:20px}
+.tab{padding:7px 18px;border-radius:7px;font-size:.82rem;font-weight:600;
+  cursor:pointer;color:#6b7280;transition:all .15s;border:none;background:none}
+.tab.active{background:#1f2937;color:#f9fafb}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* Charts */
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.chart-card{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:20px}
+.chart-title{font-size:.72rem;font-weight:600;color:#9ca3af;text-transform:uppercase;
+  letter-spacing:.08em;margin-bottom:14px}
+canvas{max-height:190px!important}
+
+/* Table */
+.tbl-wrap{background:#111827;border:1px solid #1f2937;border-radius:12px;overflow:hidden}
+.tbl-scroll{overflow-x:auto;overflow-y:auto;max-height:560px}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+thead th{background:#0f172a;color:#6b7280;font-size:.68rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;
+  position:sticky;top:0;z-index:1;border-bottom:1px solid #1f2937}
+tbody td{padding:9px 14px;border-bottom:1px solid #111;font-size:.82rem;color:#d1d5db}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#131d2e}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-btn{padding:5px 14px;border-radius:20px;font-size:.75rem;font-weight:600;
+  cursor:pointer;border:1px solid #1f2937;background:#111827;color:#9ca3af;transition:all .15s}
+.filter-btn.active{background:#1f2937;color:#f9fafb;border-color:#374151}
+.search-box{padding:6px 12px;border-radius:8px;border:1px solid #1f2937;
+  background:#0f172a;color:#e5e7eb;font-size:.8rem;outline:none;width:160px}
+.search-box:focus{border-color:#374151}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-title">Options<span>Bot</span> Dashboard</div>
+    <div class="topbar-meta" style="margin-top:3px">Scan date: <strong>2026-06-03</strong> &nbsp;·&nbsp; 8 contracts across 8 tickers</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="filter-btn active" onclick="setMode('all',this)">All</button>
+    <button class="filter-btn" onclick="setMode('call',this)">Calls Only</button>
+    <button class="filter-btn" onclick="setMode('put',this)">Puts Only</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Stats -->
+  <div class="section">
+    <div class="section-title">Today at a Glance</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+          <div style="font-size:2rem;font-weight:800;color:#10b981;line-height:1">2</div>
+          <div style="font-size:.8rem;font-weight:600;color:#e5e7eb;margin-top:4px">A+ Setups</div>
+          <div style="font-size:.7rem;color:#6b7280;margin-top:2px">highest conviction</div>
+        </div>
+      <div class="stat-card">
+          <div style="font-size:2rem;font-weight:800;color:#34d399;line-height:1">3</div>
+          <div style="font-size:.8rem;font-weight:600;color:#e5e7eb;margin-top:4px">A Setups</div>
+          <div style="font-size:.7rem;color:#6b7280;margin-top:2px">strong signals</div>
+        </div>
+      <div class="stat-card">
+          <div style="font-size:2rem;font-weight:800;color:#3b82f6;line-height:1">75</div>
+          <div style="font-size:.8rem;font-weight:600;color:#e5e7eb;margin-top:4px">Avg Score</div>
+          <div style="font-size:.7rem;color:#6b7280;margin-top:2px">out of 100</div>
+        </div>
+      <div class="stat-card">
+          <div style="font-size:2rem;font-weight:800;color:#8b5cf6;line-height:1">65%</div>
+          <div style="font-size:.8rem;font-weight:600;color:#e5e7eb;margin-top:4px">Avg IV Rank</div>
+          <div style="font-size:.7rem;color:#6b7280;margin-top:2px">vs 1yr history</div>
+        </div>
+      <div class="stat-card">
+          <div style="font-size:2rem;font-weight:800;color:#f59e0b;line-height:1">8</div>
+          <div style="font-size:.8rem;font-weight:600;color:#e5e7eb;margin-top:4px">Tickers</div>
+          <div style="font-size:.7rem;color:#6b7280;margin-top:2px">5C / 3P</div>
+        </div>
+      <div class="stat-card">
+          <div style="font-size:2rem;font-weight:800;color:#6b7280;line-height:1">8</div>
+          <div style="font-size:.8rem;font-weight:600;color:#e5e7eb;margin-top:4px">Contracts</div>
+          <div style="font-size:.7rem;color:#6b7280;margin-top:2px">scanned today</div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Top Setups -->
+  <div class="section">
+    <div class="section-title">Top Setups</div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('all-tab',this)">All</button>
+      <button class="tab" onclick="switchTab('calls-tab',this)">📈 Calls</button>
+      <button class="tab" onclick="switchTab('puts-tab',this)">📉 Puts</button>
+    </div>
+    <div id="all-tab" class="tab-pane active">
+      <div class="cards-grid"><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">TSLA</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$250.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#10b981" stroke-width="3.5"
+        stroke-dasharray="100.0 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#10b981" font-size="9" font-weight="700">88</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#10b981;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A+</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$8.40</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$244.50</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">72.3%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">81.2%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.381</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.234</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.42</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">4.8%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:81%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">20</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:84%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:90%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:86%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:87%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">13</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">NVDA</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$130.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#10b981" stroke-width="3.5"
+        stroke-dasharray="97.3 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#10b981" font-size="9" font-weight="700">86</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#10b981;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A+</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$5.95</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$124.80</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">68.4%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">79.5%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.401</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.198</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.38</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">5.0%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:80%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">20</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:76%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:88%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:82%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:100%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">AMZN</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span>
+                <span style="font-size:.75rem;color:#9ca3af">$195.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#34d399" stroke-width="3.5"
+        stroke-dasharray="88.4 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">78</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$5.25</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$199.10</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">44.2%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">71.8%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">-0.284</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.152</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.31</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">5.7%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:72%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:62%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:81%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:70%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:94%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">META</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$590.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#34d399" stroke-width="3.5"
+        stroke-dasharray="86.3 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">76</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$18.80</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$580.20</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">39.8%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">69.3%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.354</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.381</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.24</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">3.2%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:69%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:58%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:75%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:79%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:99%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">GOOGL</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$175.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#34d399" stroke-width="3.5"
+        stroke-dasharray="84.8 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">75</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$4.35</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$171.30</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">36.1%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">67.4%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.392</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.121</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.18</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">6.9%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:68%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:54%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">11</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:84%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:68%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:97%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">AAPL</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span>
+                <span style="font-size:.75rem;color:#9ca3af">$190.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#f59e0b" stroke-width="3.5"
+        stroke-dasharray="77.3 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">68</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$4.00</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$196.80</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">31.4%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">55.3%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">-0.310</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.093</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.05</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">5.0%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:55%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:25%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">5</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:88%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:60%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:93%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div></div>
+    </div>
+    <div id="calls-tab" class="tab-pane">
+      <div class="cards-grid"><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">TSLA</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$250.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#10b981" stroke-width="3.5"
+        stroke-dasharray="100.0 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#10b981" font-size="9" font-weight="700">88</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#10b981;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A+</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$8.40</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$244.50</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">72.3%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">81.2%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.381</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.234</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.42</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">4.8%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:81%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">20</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:84%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:90%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:86%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:87%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">13</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">NVDA</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$130.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#10b981" stroke-width="3.5"
+        stroke-dasharray="97.3 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#10b981" font-size="9" font-weight="700">86</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#10b981;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A+</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$5.95</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$124.80</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">68.4%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">79.5%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.401</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.198</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.38</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">5.0%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:80%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">20</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:76%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:88%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:82%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:100%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">META</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$590.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#34d399" stroke-width="3.5"
+        stroke-dasharray="86.3 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">76</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$18.80</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$580.20</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">39.8%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">69.3%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.354</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.381</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.24</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">3.2%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:69%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:58%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:75%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:79%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:99%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">15</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">GOOGL</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$175.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#34d399" stroke-width="3.5"
+        stroke-dasharray="84.8 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">75</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$4.35</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$171.30</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">36.1%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">67.4%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.392</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.121</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.18</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">6.9%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:68%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:54%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">11</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:84%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:68%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:97%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">QQQ</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span>
+                <span style="font-size:.75rem;color:#9ca3af">$470.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#f59e0b" stroke-width="3.5"
+        stroke-dasharray="71.4 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">63</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$7.30</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$463.50</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">22.1%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">44.2%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">0.380</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.104</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">0.94</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">5.5%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:44%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">11</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:16%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">3</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:81%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:61%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:95%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div></div>
+    </div>
+    <div id="puts-tab" class="tab-pane">
+      <div class="cards-grid"><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">AMZN</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span>
+                <span style="font-size:.75rem;color:#9ca3af">$195.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#34d399" stroke-width="3.5"
+        stroke-dasharray="88.4 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#34d399" font-size="9" font-weight="700">78</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$5.25</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$199.10</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">44.2%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">71.8%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">-0.284</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.152</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.31</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#f59e0b">5.7%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:72%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:62%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:81%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">16</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:70%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:94%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">AAPL</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span>
+                <span style="font-size:.75rem;color:#9ca3af">$190.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#f59e0b" stroke-width="3.5"
+        stroke-dasharray="77.3 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">68</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$4.00</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$196.80</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">31.4%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">55.3%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">-0.310</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.093</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">1.05</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">5.0%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:55%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:25%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">5</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:88%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">18</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:60%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:93%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div><div class="trade-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.3rem;font-weight:800;color:#f9fafb;letter-spacing:-.01em">SPY</div>
+              <div style="margin-top:4px;display:flex;gap:6px;align-items:center">
+                <span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span>
+                <span style="font-size:.75rem;color:#9ca3af">$540.00 strike · 17d DTE</span>
+              </div>
+            </div>
+            <div style="text-align:center">
+              <svg width="56" height="56" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#f59e0b" stroke-width="3.5"
+        stroke-dasharray="74.5 113.0" stroke-dashoffset="28.3"
+        stroke-linecap="round"/>
+      <text x="20" y="24" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">66</text>
+    </svg>
+              <div style="margin-top:2px"><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+            <div class="metric"><span class="metric-lbl">Mid Price</span><span class="metric-val">$4.80</span></div>
+            <div class="metric"><span class="metric-lbl">Spot</span><span class="metric-val">$548.20</span></div>
+            <div class="metric"><span class="metric-lbl">IV%</span><span class="metric-val">19.8%</span></div>
+            <div class="metric"><span class="metric-lbl">IV Rank</span><span class="metric-val" style="color:#8b5cf6">48.1%</span></div>
+            <div class="metric"><span class="metric-lbl">Delta</span><span class="metric-val">-0.310</span></div>
+            <div class="metric"><span class="metric-lbl">Theta/day</span><span class="metric-val" style="color:#f59e0b">-0.072</span></div>
+            <div class="metric"><span class="metric-lbl">IV/HV</span><span class="metric-val">0.98</span></div>
+            <div class="metric"><span class="metric-lbl">Spread</span><span class="metric-val" style="color:#10b981">4.2%</span></div>
+          </div>
+          
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;font-size:.68rem;color:#6b7280;margin-bottom:2px">
+              <span>Score components</span><span style="color:#9ca3af">/pts</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV Rank</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:48%;height:100%;background:#8b5cf6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">12</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">IV/HV</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:20%;height:100%;background:#3b82f6;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">4</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Spread</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:86%;height:100%;background:#10b981;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">17</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Theta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:55%;height:100%;background:#f59e0b;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">11</span>
+    </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.7rem">
+              <span style="width:52px;color:#9ca3af">Delta</span>
+              <div style="display:flex;align-items:center;gap:6px">
+      <div style="flex:1;height:4px;background:#1f2937;border-radius:2px;overflow:hidden">
+        <div style="width:93%;height:100%;background:#ef4444;border-radius:2px"></div>
+      </div>
+      <span style="font-size:.7rem;color:#9ca3af;width:22px;text-align:right">14</span>
+    </div>
+            </div>
+          </div>
+        </div></div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="section">
+    <div class="section-title">Analytics</div>
+    <div class="charts-grid">
+      <div class="chart-card"><div class="chart-title">Grade Distribution</div><canvas id="cGrade"></canvas></div>
+      <div class="chart-card"><div class="chart-title">Top Tickers by Avg Score</div><canvas id="cSym"></canvas></div>
+      <div class="chart-card"><div class="chart-title">IV Rank Distribution</div><canvas id="cIV"></canvas></div>
+      <div class="chart-card"><div class="chart-title">Historical Avg Score</div><canvas id="cTrend"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Full Table -->
+  <div class="section">
+    <div class="section-title">All Ranked Contracts</div>
+    <div class="filter-bar">
+      <input class="search-box" id="tblSearch" placeholder="Search ticker…" oninput="filterTable()">
+      <button class="filter-btn active" id="fb-all"  onclick="filterType('all',this)">All</button>
+      <button class="filter-btn" id="fb-call" onclick="filterType('call',this)">Calls</button>
+      <button class="filter-btn" id="fb-put"  onclick="filterType('put',this)">Puts</button>
+      <button class="filter-btn" id="fb-aplus" onclick="filterGrade('A+',this)">A+ Only</button>
+      <button class="filter-btn" id="fb-a"    onclick="filterGrade('A',this)">A+ & A</button>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-scroll">
+        <table id="mainTable">
+          <thead><tr>
+            <th>Grade</th><th>Score</th><th>Ticker</th><th>Type</th>
+            <th>Strike</th><th>DTE</th><th>Spot</th><th>Mid</th>
+            <th>IV%</th><th>IV Rank</th><th>IV/HV</th>
+            <th>Delta</th><th>Theta</th><th>Spread%</th>
+          </tr></thead>
+          <tbody id="tblBody"><tr>
+          <td><span style="background:#10b981;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A+</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">88.5</span></td>
+          <td style="font-weight:700;color:#f9fafb">TSLA</td>
+          <td><span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span></td>
+          <td>$250.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$244.50</td>
+          <td style="font-weight:600">$8.40</td>
+          <td>72.3%</td>
+          <td style="color:#8b5cf6;font-weight:600">81.2%</td>
+          <td>1.42</td>
+          <td>0.381</td>
+          <td style="color:#f59e0b">-0.2341</td>
+          <td style="color:#10b981">4.8%</td>
+        </tr><tr>
+          <td><span style="background:#10b981;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A+</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">86.1</span></td>
+          <td style="font-weight:700;color:#f9fafb">NVDA</td>
+          <td><span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span></td>
+          <td>$130.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$124.80</td>
+          <td style="font-weight:600">$5.95</td>
+          <td>68.4%</td>
+          <td style="color:#8b5cf6;font-weight:600">79.5%</td>
+          <td>1.38</td>
+          <td>0.401</td>
+          <td style="color:#f59e0b">-0.1980</td>
+          <td style="color:#f59e0b">5.0%</td>
+        </tr><tr>
+          <td><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">78.2</span></td>
+          <td style="font-weight:700;color:#f9fafb">AMZN</td>
+          <td><span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span></td>
+          <td>$195.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$199.10</td>
+          <td style="font-weight:600">$5.25</td>
+          <td>44.2%</td>
+          <td style="color:#8b5cf6;font-weight:600">71.8%</td>
+          <td>1.31</td>
+          <td>-0.284</td>
+          <td style="color:#f59e0b">-0.1523</td>
+          <td style="color:#f59e0b">5.7%</td>
+        </tr><tr>
+          <td><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">76.4</span></td>
+          <td style="font-weight:700;color:#f9fafb">META</td>
+          <td><span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span></td>
+          <td>$590.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$580.20</td>
+          <td style="font-weight:600">$18.80</td>
+          <td>39.8%</td>
+          <td style="color:#8b5cf6;font-weight:600">69.3%</td>
+          <td>1.24</td>
+          <td>0.354</td>
+          <td style="color:#f59e0b">-0.3812</td>
+          <td style="color:#10b981">3.2%</td>
+        </tr><tr>
+          <td><span style="background:#34d399;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">A</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">75.0</span></td>
+          <td style="font-weight:700;color:#f9fafb">GOOGL</td>
+          <td><span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span></td>
+          <td>$175.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$171.30</td>
+          <td style="font-weight:600">$4.35</td>
+          <td>36.1%</td>
+          <td style="color:#8b5cf6;font-weight:600">67.4%</td>
+          <td>1.18</td>
+          <td>0.392</td>
+          <td style="color:#f59e0b">-0.1211</td>
+          <td style="color:#f59e0b">6.9%</td>
+        </tr><tr>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">68.4</span></td>
+          <td style="font-weight:700;color:#f9fafb">AAPL</td>
+          <td><span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span></td>
+          <td>$190.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$196.80</td>
+          <td style="font-weight:600">$4.00</td>
+          <td>31.4%</td>
+          <td style="color:#8b5cf6;font-weight:600">55.3%</td>
+          <td>1.05</td>
+          <td>-0.310</td>
+          <td style="color:#f59e0b">-0.0934</td>
+          <td style="color:#10b981">5.0%</td>
+        </tr><tr>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">65.9</span></td>
+          <td style="font-weight:700;color:#f9fafb">SPY</td>
+          <td><span style="background:rgba(239,68,68,.15);color:#f87171;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">PUT ▼</span></td>
+          <td>$540.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$548.20</td>
+          <td style="font-weight:600">$4.80</td>
+          <td>19.8%</td>
+          <td style="color:#8b5cf6;font-weight:600">48.1%</td>
+          <td>0.98</td>
+          <td>-0.310</td>
+          <td style="color:#f59e0b">-0.0721</td>
+          <td style="color:#10b981">4.2%</td>
+        </tr><tr>
+          <td><span style="background:#f59e0b;color:#fff;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.05em">B</span></td>
+          <td><span style="font-size:.85rem;color:#9ca3af">63.2</span></td>
+          <td style="font-weight:700;color:#f9fafb">QQQ</td>
+          <td><span style="background:rgba(59,130,246,.15);color:#60a5fa;padding:2px 8px;border-radius:6px;font-size:.75rem;font-weight:600">CALL ▲</span></td>
+          <td>$470.00</td>
+          <td style="color:#9ca3af">17d</td>
+          <td>$463.50</td>
+          <td style="font-weight:600">$7.30</td>
+          <td>22.1%</td>
+          <td style="color:#8b5cf6;font-weight:600">44.2%</td>
+          <td>0.94</td>
+          <td>0.380</td>
+          <td style="color:#f59e0b">-0.1041</td>
+          <td style="color:#f59e0b">5.5%</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+const gradeData = {labels:['A+', 'A', 'B', 'C', 'D'],data:[2, 3, 3, 0, 0],colors:['#10b981','#34d399','#f59e0b','#f97316','#ef4444']};
+const symData   = {labels:['TSLA', 'NVDA', 'AMZN', 'META', 'GOOGL', 'AAPL', 'SPY', 'QQQ'],data:[88.5, 86.1, 78.2, 76.4, 75.0, 68.4, 65.9, 63.2]};
+const ivData    = {labels:['0-10','10-20','20-30','30-40','40-50','50-60','60-70','70-80','80-90','90+'],data:[0, 0, 0, 0, 2, 1, 2, 2, 1, 0]};
+const trendData = {labels:[],data:[]};
+
+
+Chart.defaults.color = '#6b7280';
+Chart.defaults.font.family = 'Inter, system-ui';
+const grid = { color:'#1f2937' };
+
+new Chart(document.getElementById('cGrade'),{
+  type:'doughnut',
+  data:{labels:gradeData.labels,datasets:[{data:gradeData.data,backgroundColor:gradeData.colors,borderWidth:0,hoverOffset:4}]},
+  options:{plugins:{legend:{position:'right',labels:{boxWidth:10,padding:12}}},cutout:'65%'}
+});
+
+new Chart(document.getElementById('cSym'),{
+  type:'bar',
+  data:{labels:symData.labels,datasets:[{data:symData.data,backgroundColor:'#3b82f6',borderRadius:4,borderSkipped:false}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid,ticks:{color:'#6b7280'}},y:{grid:{display:false},ticks:{color:'#9ca3af',font:{size:11}}}}}
+});
+
+new Chart(document.getElementById('cIV'),{
+  type:'bar',
+  data:{labels:ivData.labels,datasets:[{data:ivData.data,backgroundColor:'#8b5cf6',borderRadius:4,borderSkipped:false}]},
+  options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#6b7280',font:{size:10}}},y:{grid,ticks:{color:'#6b7280'}}}}
+});
+
+new Chart(document.getElementById('cTrend'),{
+  type:'line',
+  data:{labels:trendData.labels,datasets:[{data:trendData.data,borderColor:'#10b981',
+    backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.35,
+    pointBackgroundColor:'#10b981',pointRadius:3,pointHoverRadius:5}]},
+  options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#6b7280',font:{size:10}}},y:{grid,ticks:{color:'#6b7280'}}}}
+});
+
+// Tab switching
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Table filtering
+let _typeFilter = 'all';
+let _gradeFilter = null;
+
+function filterType(t, el) {
+  _typeFilter = t;
+  _gradeFilter = null;
+  document.querySelectorAll('[id^=fb-]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  filterTable();
+}
+
+function filterGrade(g, el) {
+  _gradeFilter = g;
+  _typeFilter = 'all';
+  document.querySelectorAll('[id^=fb-]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  filterTable();
+}
+
+function filterTable() {
+  const q = document.getElementById('tblSearch').value.toUpperCase();
+  const rows = document.querySelectorAll('#tblBody tr');
+  rows.forEach(tr => {
+    const cells = tr.querySelectorAll('td');
+    const ticker = cells[2]?.textContent.toUpperCase() || '';
+    const type   = cells[3]?.textContent.toLowerCase() || '';
+    const grade  = cells[0]?.textContent.trim() || '';
+    let show = ticker.includes(q);
+    if (_typeFilter !== 'all' && !type.includes(_typeFilter)) show = false;
+    if (_gradeFilter) {
+      if (_gradeFilter === 'A+') show = show && grade === 'A+';
+      else show = show && (grade === 'A+' || grade === 'A');
+    }
+    tr.style.display = show ? '' : 'none';
+  });
+}
+
+function setMode(m, el) {
+  document.querySelectorAll('.topbar button').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  // Also update the tab panel cards visibility
+}
+</script>
+</body>
+</html>

@@ -294,10 +294,27 @@ def main():
     except Exception as e:
         print(f"  [!] Dashboard generation failed: {e}")
 
-    # 8. Send Discord notification
+    # 8. Publish dashboard to GitHub Pages
+    pages_url = None
+    try:
+        import shutil, subprocess
+        docs_dir = os.path.join(os.path.dirname(__file__), "docs")
+        os.makedirs(docs_dir, exist_ok=True)
+        if dash_path and os.path.exists(dash_path):
+            shutil.copy(dash_path, os.path.join(docs_dir, "index.html"))
+            subprocess.run(["git", "add", "docs/index.html"], cwd=os.path.dirname(__file__), check=True)
+            subprocess.run(["git", "commit", "-m", f"Dashboard update {today}"],
+                           cwd=os.path.dirname(__file__), check=True)
+            subprocess.run(["git", "push"], cwd=os.path.dirname(__file__), check=True)
+            pages_url = "https://ablourchian.github.io/options-bot/"
+            print(f"  Dashboard published -> {pages_url}")
+    except Exception as e:
+        print(f"  [!] GitHub Pages publish failed: {e}")
+
+    # 9. Send Discord notification
     try:
         from notifier import send_daily_report
-        send_daily_report(ranked, today, dashboard_path=dash_path)
+        send_daily_report(ranked, today, dashboard_path=dash_path, pages_url=pages_url)
     except Exception as e:
         print(f"  [!] Notification failed: {e}")
 
