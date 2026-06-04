@@ -221,7 +221,7 @@ def determine_direction(bars, gap_pct, news_data):
 
 # ── Options finder ────────────────────────────────────────────────────────────
 
-def find_best_contract(symbol, spot, direction, dte_min=30, dte_max=60):
+def find_best_contract(symbol, spot, direction, dte_min=0, dte_max=45):
     """Find the best ATM/slightly OTM weekly option for a day trade."""
     today = date.today()
     exp_start = today + timedelta(days=dte_min)
@@ -281,15 +281,35 @@ def find_best_contract(symbol, spot, direction, dte_min=30, dte_max=60):
         if score > best_score and spread_pct < 0.20 and mid > 0.05:
             best_score = score
             best = {
-                "symbol":    c.symbol,
-                "strike":    strike,
-                "dte":       dte,
-                "expiry":    str(c.expiration_date),
-                "bid":       q.bid_price,
-                "ask":       q.ask_price,
-                "mid":       round(mid, 2),
+                "symbol":     c.symbol,
+                "strike":     strike,
+                "dte":        dte,
+                "expiry":     str(c.expiration_date),
+                "bid":        q.bid_price,
+                "ask":        q.ask_price,
+                "mid":        round(mid, 2),
                 "spread_pct": round(spread_pct * 100, 1),
+                "spread_dollar": round(q.ask_price - q.bid_price, 2),
+                "_spot":      spot,
+                "_otype":     "call" if direction == "CALL" else "put",
             }
+
+    if best:
+        # Compute IV + Greeks for the best contract
+        try:
+            from implied_vol import implied_volatility
+            from greeks import greeks as compute_greeks
+            T = best["dte"] / 365.0
+            iv = implied_volatility(best["mid"], best["_spot"], best["strike"], T, 0.045, best["_otype"])
+            if iv:
+                g = compute_greeks(best["_spot"], best["strike"], T, 0.045, iv, best["_otype"])
+                best["iv"]    = round(iv * 100, 1)
+                best["delta"] = g["delta"]
+                best["gamma"] = g["gamma"]
+                best["theta"] = g["theta"]
+                best["vega"]  = g["vega"]
+        except Exception:
+            pass
 
     return best
 
@@ -361,6 +381,7 @@ def screen(symbols, news_map=None, top_n=20, dte_max=5):
             "s_news": round(s_news, 1),
             "s_mom":  round(s_mom, 1),
             "contract": None,  # filled below
+            "bars": [{"c": b["close"], "h": b["high"], "l": b["low"], "o": b["open"]} for b in bars[-30:]],
         })
 
     # Sort by score
